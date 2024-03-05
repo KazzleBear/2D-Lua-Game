@@ -1,6 +1,6 @@
 # 3DLove
-________ is the main lua file for the engine. 
-________ is the math library I have created for it.
+________ is the main lua file for the graphics engine. 
+________ is the math library.
 
 This project uses Löve2D, you can run it by:
 - copying everything over into VSC (Visual Studio Code)
@@ -9,9 +9,9 @@ This project uses Löve2D, you can run it by:
 - Now run the shortcut in the VSC workspace and it should show a Roblox map
 
 Want to change the loaded obj?
-- On line 16 in main.lua, replace "MapNameEXAMPLE" with the exact folder name
+- In main.lua, replace "MapNameEXAMPLE" with the exact folder name
 
-Want to add more objs?
+Want to add more objs (objects)?
 - Make a folder and call it the exact same as your obj file, without the .obj extension, and put this folder inside "Objects"
 - Add the .obj file into the folder
 - If your obj has a .mtl file, add it into the folder too. The .mtl file must have the same name as the .obj file
