@@ -1,5 +1,50 @@
 --You can use Alt + L to open a love2d window
 _G.love = require("love")
+local edit = require("change")
+a = {{5, 3, 5, 7},
+     {7, 4, 2, 9},
+     {3, 7, 9, 2},
+     {1, 7, 2, 5}}
+a = print()
+
+function transform1(x, y, z, w)
+
+    a = 5
+    return a
+end
+a = transform1(1, 1, 1, 1)
+
+print(a)
+
+--[[
+b = {p = print}
+b.p("aper")
+print = math.sin
+print(1)
+sin = b.p
+sin(10, 20)
+--]]
+
+
+edit.transform(1, 1, 1, 1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function love.load()
     love.graphics.setBackgroundColor(0.5, 0.5, 1)
@@ -32,4 +77,7 @@ function love.draw()
     love.graphics.line(50, 50, 50, 150)
     love.graphics.line(50, 50, 150, 50)
     love.graphics.line(50, 150, 150, 150)
+
+    width, height = love.graphics.getDimensions()
+    love.graphics.rectangle("fill", width-100, height-100, 15, 15)
 end
