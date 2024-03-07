@@ -1,3 +1,5 @@
+local render = require("render")
+
 --You can use Alt + L to open a love2d window
 _G.love = require("love")
 local edit = require("change")
