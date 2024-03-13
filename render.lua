@@ -56,20 +56,33 @@ local mesh = {
 cube = mesh
 
 cube.triangles = {
-    --north
-
-    --south
-
-    --east
-
-    --west
+    --top
+    {0, 1, 0,       0, 1, 1,       1, 1, 1},
+    {0, 1, 0,       1, 1, 1,       1, 1, 0},
+    --bottom
+    {0, 0, 0,       0, 0, 1,       1, 0, 1},
+    {0, 0, 0,       1, 0, 1,       1, 0, 0},
+    --right
+    {1, 0, 0,       1, 1, 0,       1, 1, 1},
+    {1, 0, 0,       1, 1, 1,       1, 0, 1},
+    --left
+    {0, 0, 0,       0, 1, 0,       0, 1, 1},
+    {0, 0, 0,       0, 1, 1,       0, 0, 1},
+    --close
+    {0, 0, 0,       0, 1, 0,       1, 1, 0},
+    {0, 0, 0,       1, 1, 0,       1, 0, 0},
+    --far
+    {0, 0, 1,       0, 1, 1,       1, 1, 1},
+    {0, 0, 1,       1, 1, 1,       1, 0, 1}
 }
 
-
-
-local transform = {
-    transform = function(x, y, z, w)
-        
-end
+normalize = {
+    function(table)
+        for i = 0, table.length(), 3 do
+        table[1+i] = table[1+i] * a
+        table[2+i] = table[2+i] * a*fovRad
+        table[3+i] = table[3+i]
+        end
+        return table
+    end
 }
-return transform

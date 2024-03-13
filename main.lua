@@ -1,4 +1,4 @@
-local render = require("render")
+require("render")
 
 --You can use Alt + L to open a love2d window
 _G.love = require("love")
@@ -6,18 +6,16 @@ _G.love = require("love")
 
 
 
+cubeCopy = ("render").cube
+
+cubeCopy[1] = ("render").normalize(cubeCopy[1]) 
 
 
 
 
 
 
-
-
-
-
-
-
+a = 0.5
 
 
 
@@ -25,11 +23,12 @@ _G.love = require("love")
 
 
 function love.load()
-    love.graphics.setBackgroundColor(0.5, 0.5, 1)
+    
+    love.graphics.setBackgroundColor(a, 0.5, 1)
 end
 
 function love.update(dt)
-
+a = a + 1.1
 end
 
 function love.draw()
@@ -40,7 +39,7 @@ function love.draw()
     love.graphics.rectangle("fill", 50, 50, 50, 50)
 
     love.graphics.setColor(1, 0.7, 0.1)
-    love.graphics.circle("fill", 580, 180, 40)
+    love.graphics.circle("fill", a, 180, 40)
 
     --making cube (im goated)
     love.graphics.line(50, 50, 100, 100)
