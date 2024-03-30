@@ -1,93 +1,95 @@
-require("render")
+-- Import Love2D modules
+local love = require("love")
 
---You can use Alt + L to open a love2d window
-_G.love = require("love")
+-- Constants
+local Width = 800
+local Height = 800
+local Offset = 800.0 / 2.0
+local rotationSpeedX = 0.5 -- Adjust the rotation speed
+local rotationSpeedY = 0.5 -- Adjust the rotation speed
+local rotationSpeedZ = 0.5-- Adjust the rotation speed
 
-local SCREEN_WIDTH, SCREEN_HEIGHT = love.graphics.getDimensions()
-local HALF_WIDTH = SCREEN_WIDTH / 2
-local HALF_HEIGHT = SCREEN_HEIGHT / 2
-
-
-
-local FOV = 30
-local NEAR = 0.1
-local FAR = 1000
-local a = SCREEN_HEIGHT/SCREEN_WIDTH
-local fovRad = 1/math.tan((0.5*FOV) * math.pi/180) --arctan of theta/2
-
-
-
-local vector3d = {
-    x, y, z
+-- Node and Edge types
+local Nodes = {
+    {X = -100.0, Y = -100.0, Z = -100.0},
+    {X = -100.0, Y = -100.0, Z = 100.0},
+    {X = -100.0, Y = 100.0, Z = -100.0},
+    {X = -100.0, Y = 100.0, Z = 100.0},
+    {X = 100.0, Y = -100.0, Z = -100.0},
+    {X = 100.0, Y = -100.0, Z = 100.0},
+    {X = 100.0, Y = 100.0, Z = -100.0},
+    {X = 100.0, Y = 100.0, Z = 100.0}
+}
+local Edges = {
+    {A = 1, B = 2}, {A = 2, B = 4}, {A = 4, B = 3}, {A = 3, B = 1},
+    {A = 5, B = 6}, {A = 6, B = 8}, {A = 8, B = 7}, {A = 7, B = 5},
+    {A = 1, B = 5}, {A = 2, B = 6}, {A = 3, B = 7}, {A = 4, B = 8}
 }
 
-local triangle = {
-    vector3d.x, vector3d.y, vector3d.z
-}
+-- Function to rotate the cube
+local function RotateCube(angleX, angleY, angleZ)
+    local sinX = math.sin(angleX)
+    local cosX = math.cos(angleX)
+    local sinY = math.sin(angleY)
+    local cosY = math.cos(angleY)
+    local sinZ = math.sin(angleZ)
+    local cosZ = math.cos(angleZ)
+    
+    for _, node in ipairs(Nodes) do
+        local x = node.X
+        local y = node.Y
+        local z = node.Z
 
-local mesh = {
-    triangles = {}
-}
+        -- Rotate around X axis
+        local tempY = y
+        y = y * cosX - z * sinX
+        z = z * cosX + tempY * sinX
+        
+        -- Rotate around Y axis
+        local tempX = x
+        x = x * cosY - z * sinY
+        z = z * cosY + tempX * sinY
+        
+        -- Rotate around Z axis
+        tempX = x
+        x = x * cosZ - y * sinZ
+        y = y * cosZ + tempX * sinZ
 
+        -- Update node coordinates
+        node.X = x
+        node.Y = y
+        node.Z = z
+    end
+end
 
-cube = mesh
+-- Love2D callback function for initialization
+function love.load()
+    love.window.setTitle("Rotating cube")
+    love.window.setMode(Width, Height)
+end
 
+-- Love2D callback function for updating
+function love.update(dt)
+    local angleX = rotationSpeedX * dt
+    local angleY = rotationSpeedY * dt
+    local angleZ = rotationSpeedZ * dt
+    RotateCube(angleX, angleY, angleZ)
+end
 
-cube.triangles = {
-    --top
-    {0, 1, 0,       0, 1, 1,       1, 1, 1},
-    {0, 1, 0,       1, 1, 1,       1, 1, 0},
-    --bottom
-    {0, 0, 0,       0, 0, 1,       1, 0, 1},
-    {0, 0, 0,       1, 0, 1,       1, 0, 0},
-    --right
-    {1, 0, 0,       1, 1, 0,       1, 1, 1},
-    {1, 0, 0,       1, 1, 1,       1, 0, 1},
-    --left
-    {0, 0, 0,       0, 1, 0,       0, 1, 1},
-    {0, 0, 0,       0, 1, 1,       0, 0, 1},
-    --close
-    {0, 0, 0,       0, 1, 0,       1, 1, 0},
-    {0, 0, 0,       1, 1, 0,       1, 0, 0},
-    --far
-    {0, 0, 1,       0, 1, 1,       1, 1, 1},
-    {0, 0, 1,       1, 1, 1,       1, 0, 1}
-}
-
-
-
-
-
-
-
-
-
-
-
+-- Love2D callback function for drawing
 function love.draw()
-    --Uses RGB (normally it's a number between 0 and 255, but for lua its 0-1
-    --so u have to divide by 255 to get correct color)
-    love.graphics.setColor(72/255, 148/255, 10/255)
-    --(0,0) is at top left of screen
-    love.graphics.rectangle("fill", 50, 50, 50, 50)
-
-    love.graphics.setColor(1, 0.7, 0.1)
-    love.graphics.circle("fill", a, 180, 40)
-
-    --making cube (im goated)
-    love.graphics.line(50, 50, 100, 100)
-    love.graphics.line(150, 50, 200, 100)
-    love.graphics.line(50, 150, 100, 200)
-    love.graphics.line(150, 150, 200, 200)
-    love.graphics.line(100, 100, 200, 100)
-    love.graphics.line(100, 200, 200, 200)
-    love.graphics.line(100, 100, 100, 200)
-    love.graphics.line(200, 100, 200, 200)
-    love.graphics.line(150, 50, 150, 150)
-    love.graphics.line(50, 50, 50, 150)
-    love.graphics.line(50, 50, 150, 50)
-    love.graphics.line(50, 150, 150, 150)
-
-    width, height = love.graphics.getDimensions()
-    love.graphics.rectangle("fill", width-100, height-100, 15, 15)
+    love.graphics.setLineWidth(2)
+    love.graphics.setBackgroundColor(0, 0, 0)
+    love.graphics.setColor(0, 220, 0)
+    
+    -- Project and draw edges
+    for _, edge in ipairs(Edges) do
+        local nodeA = Nodes[edge.A]
+        local nodeB = Nodes[edge.B]
+        local ax = nodeA.X + Offset
+        local ay = nodeA.Y + Offset
+        local bx = nodeB.X + Offset
+        local by = nodeB.Y + Offset
+        love.graphics.line(ax, ay, bx, by)
+    end
 end
